@@ -1,0 +1,8 @@
+package xml
+
+import xml.Sugar
+import scala.xml._
+
+object Test extends App {
+	println( <html>{}</html> )
+}

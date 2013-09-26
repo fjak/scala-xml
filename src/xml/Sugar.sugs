@@ -1,0 +1,35 @@
+package xml
+
+import concretesyntax.Scala
+
+sugar Sugar {
+	lexical syntax
+		"<!--" (~[\-] | ("-" ~[\-]))* "-->" -> XmlComment
+		[a-zA-Z\_]                          -> XmlNameStart
+		XmlNameStart [a-zA-Z0-9\_\-]*       -> XmlName
+		"\"" (~[\"] | "\\\"")* "\""         -> XmlAttValue
+		"'" (~[\'] | "\\'")* "'"            -> XmlAttValue
+		XmlComment                          -> LAYOUT
+
+	context-free syntax
+		XmlElement -> ScalaNoLExpr
+
+		XmlEmptyTag                -> XmlElement
+		XmlSTag XmlContent XmlETag -> XmlElement {cons("XmlElement")}
+
+		"<" XmlName XmlAttribute* "/>" -> XmlEmptyTag {cons("XmlEmptyTag")}
+		"<" XmlName XmlAttribute* ">"  -> XmlSTag {cons("XmlSTag")}
+		"</" XmlName ">"               -> XmlETag {cons("XmlETag")}
+
+		XmlName "=" XmlAttValue -> XmlAttribute {cons("XmlAttribute")}
+
+		ScalaBlockExpr -> XmlAttValue
+		ScalaBlockExpr -> XmlContent
+
+	desugarings
+		desugar-xml-element
+
+	rules
+		desugar-xml-element:
+			XmlElement(s, c, e) -> |[ Elem(null, "\"xml\"", Null, TopScope, false, null) ]|
+}
