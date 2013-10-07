@@ -1,35 +1,24 @@
 package xml
 
 import concretesyntax.Scala
+import xml.XmlSyntax
 
 sugar Sugar {
-	lexical syntax
-		"<!--" (~[\-] | ("-" ~[\-]))* "-->" -> XmlComment
-		[a-zA-Z\_]                          -> XmlNameStart
-		XmlNameStart [a-zA-Z0-9\_\-]*       -> XmlName
-		"\"" (~[\"] | "\\\"")* "\""         -> XmlAttValue
-		"'" (~[\'] | "\\'")* "'"            -> XmlAttValue
-		XmlComment                          -> LAYOUT
-
 	context-free syntax
-		XmlElement -> ScalaNoLExpr
-
-		XmlEmptyTag                -> XmlElement
-		XmlSTag XmlContent XmlETag -> XmlElement {cons("XmlElement")}
-
-		"<" XmlName XmlAttribute* "/>" -> XmlEmptyTag {cons("XmlEmptyTag")}
-		"<" XmlName XmlAttribute* ">"  -> XmlSTag {cons("XmlSTag")}
-		"</" XmlName ">"               -> XmlETag {cons("XmlETag")}
-
-		XmlName "=" XmlAttValue -> XmlAttribute {cons("XmlAttribute")}
-
-		ScalaBlockExpr -> XmlAttValue
-		ScalaBlockExpr -> XmlContent
+		Element -> ScalaExpr {prefer}
+		Element -> ScalaNoLExpr {prefer}
 
 	desugarings
-		desugar-xml-element
+		desugar-empty-element
 
 	rules
-		desugar-xml-element:
-			XmlElement(s, c, e) -> |[ Elem(null, "\"xml\"", Null, TopScope, false, null) ]|
+		desugar-empty-element:
+			EmptyElement(ElemName(QName(None, name)), attrs) ->
+				|[ scala.xml.Elem(
+					null,
+					:${quotedName},
+					scala.xml.Null,
+					scala.xml.TopScope,
+					true) ]|
+				where quotedName := <quote(!'"')> name
 }

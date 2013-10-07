@@ -1,0 +1,47 @@
+package xml
+
+import xml.Sugar
+import scala.collection.immutable.List
+import scala.collection.mutable.ListBuffer
+
+trait Test {
+	def apply() = {
+		test()
+		if (actual == expected) true
+		else {
+			msg = s"$name: Expected '$expected', but was '$actual'"
+			false
+		}
+	}
+	def test(): Unit
+	val expected: String
+	val name: String
+	var actual = ""
+	var msg = ""
+}
+
+object SugarTest {
+	def main(args: Array[String]) {
+		val tests = List(testEmptyElement)
+		val failed = new ListBuffer[Test]
+		for (test <- tests) {
+			if (test()) println(".")
+			else {
+				println("F")
+				failed += test
+			}
+		}
+
+		for (f <- failed) {
+			println(f.msg)
+		}
+	}
+
+	val testEmptyElement = new Test {
+		val name = "Empty Element Test"
+		val expected = "<xml/>"
+		def test() = {
+			actual = (<xml/>).toString
+		}
+	}
+}
