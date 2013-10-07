@@ -2,6 +2,7 @@ package xml
 
 import concretesyntax.Scala
 import xml.XmlSyntax
+import xml.XmlTextTools
 
 sugar Sugar {
 	context-free syntax
@@ -10,10 +11,11 @@ sugar Sugar {
 
 	desugarings
 		desugar-empty-element
+		desugar-attributes
 
 	rules
 		desugar-empty-element:
-			EmptyElement(ElemName(QName(None, name)), attrs) ->
+			EmptyElement(ElemName(QName(None(), name)), []) ->
 				|[ scala.xml.Elem(
 					null,
 					:${quotedName},
@@ -21,4 +23,21 @@ sugar Sugar {
 					scala.xml.TopScope,
 					true) ]|
 				where quotedName := <quote(!'"')> name
+
+		desugar-empty-element:
+			EmptyElement(ElemName(QName(None(), name)), attrs) ->
+				|[ scala.xml.Elem(
+					null,
+					:${quotedName},
+					:${attrs},
+					scala.xml.TopScope,
+					true) ]|
+				where quotedName := <quote(!'"')> name
+
+		desugar-attributes:
+			[Attribute(AttrName(QName(None(), name)), cdata) | []] ->
+				|[ new scala.xml.UnprefixedAttribute(
+					:${<quote(!'"')> name},
+					:${<quote(!'"')> <xml-attr-value2string> cdata},
+					scala.xml.Null) ]|
 }

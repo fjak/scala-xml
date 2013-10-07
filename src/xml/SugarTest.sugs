@@ -22,16 +22,18 @@ trait Test {
 
 object SugarTest {
 	def main(args: Array[String]) {
-		val tests = List(testEmptyElement)
+		val tests = List(
+			testEmptyElement,
+			testOneAttributeEmptyElement)
 		val failed = new ListBuffer[Test]
 		for (test <- tests) {
-			if (test()) println(".")
+			if (test()) print(".")
 			else {
-				println("F")
+				print("F")
 				failed += test
 			}
 		}
-
+		println()
 		for (f <- failed) {
 			println(f.msg)
 		}
@@ -42,6 +44,14 @@ object SugarTest {
 		val expected = "<xml/>"
 		def test() = {
 			actual = (<xml/>).toString
+		}
+	}
+
+	val testOneAttributeEmptyElement = new Test {
+		val name = "One attribute on empty element"
+		val expected = "<xml lang=\"de\"/>"
+		def test() = {
+			actual = (<xml lang="de"/>).toString
 		}
 	}
 }
