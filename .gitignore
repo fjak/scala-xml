@@ -1,3 +1,5 @@
 .sugarjcache/
 bin/
 .cache/
+*.aterm
+*.desug
