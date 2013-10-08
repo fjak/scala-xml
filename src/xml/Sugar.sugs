@@ -25,6 +25,16 @@ sugar Sugar {
 					false) ]|
 				where quotedName := <quote(!'"')> name
 
+		desugar-element:
+			Element(ElemName(QName(None(), name)), attrs, [], _) ->
+				|[ scala.xml.Elem(
+					null,
+					:${quotedName},
+					:${attrs},
+					scala.xml.TopScope,
+					false) ]|
+				where quotedName := <quote(!'"')> name
+
 		desugar-empty-element:
 			EmptyElement(ElemName(QName(None(), name)), []) ->
 				|[ scala.xml.Elem(
