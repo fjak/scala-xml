@@ -40,4 +40,11 @@ sugar Sugar {
 					:${<quote(!'"')> name},
 					:${<quote(!'"')> <xml-attr-value2string> cdata},
 					scala.xml.Null) ]|
+
+		desugar-attributes:
+			[Attribute(AttrName(QName(None(), name)), cdata) | rst] ->
+				|[ new scala.xml.UnprefixedAttribute(
+					:${<quote(!'"')> name},
+					:${<quote(!'"')> <xml-attr-value2string> cdata},
+					:${rst}) ]|
 }
