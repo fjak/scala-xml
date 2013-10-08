@@ -34,6 +34,9 @@ object SugarTest {
 			}
 		}
 		println()
+		println(s"Passed ${tests.length - failed.length}/${tests.length}")
+		println(s"Last test added: ${tests.last.name}")
+		println()
 		for (f <- failed) {
 			println(f.msg)
 		}
