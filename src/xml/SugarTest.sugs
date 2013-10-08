@@ -90,5 +90,29 @@ object SugarTest {
 				actual = (<xml lang="de" id="foo"></xml>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "One nested element without attributes (no text)"
+			val expected = "<xml><book></book></xml>"
+			def test() = {
+				actual = (<xml><book></book></xml>).toString
+			}
+		}
+
+		tests += new Test {
+			val name = "One nested empty element without attributes (no text)"
+			val expected = "<xml><book/></xml>"
+			def test() = {
+				actual = (<xml><book/></xml>).toString
+			}
+		}
+
+		tests += new Test {
+			val name = "One nested element with attributes (no text)"
+			val expected = "<xml><book author=\"Jon Doe\" title=\"Foo\"></book></xml>"
+			def test() = {
+				actual = (<xml><book author="Jon Doe" title="Foo"></book></xml>).toString
+			}
+		}
 	}
 }
