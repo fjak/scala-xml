@@ -38,14 +38,18 @@ sugar Sugar {
 
 		desugar-element:
 			Element(ElemName(QName(None(), name)), [], children, _) ->
-				|[ scala.xml.Elem(
-					null,
-					:${quotedName},
-					scala.xml.Null,
-					scala.xml.TopScope,
-					false,
-					:${children}) ]|
-				where quotedName := <quote(!'"')> name
+				AppExpr(
+				  Path(["scala", "xml", "Elem"])
+				, ArgumentExprs(
+				    Some(
+				      Exprs(
+				        <flatten-list>
+				        [ Null()
+				        , <double-quote> name
+				        , Path(["scala", "xml", "Null"])
+				        , Path(["scala", "xml", "TopScope"])
+				        , False()
+				        , children ]))))
 
 		desugar-empty-element:
 			EmptyElement(ElemName(QName(None(), name)), []) ->
