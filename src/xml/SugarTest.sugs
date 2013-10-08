@@ -114,5 +114,13 @@ object SugarTest {
 				actual = (<xml><book author="Jon Doe" title="Foo"></book></xml>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "One nested text element"
+			val expected = "<title>Foo Bar Baz</title>"
+			def test() = {
+				actual = (<title>Foo Bar Baz</title>).toString
+			}
+		}
 	}
 }

@@ -13,6 +13,7 @@ sugar Sugar {
 		desugar-element
 		desugar-empty-element
 		desugar-attributes
+		desugar-text
 
 	rules
 		desugar-element:
@@ -79,4 +80,9 @@ sugar Sugar {
 					:${<quote(!'"')> name},
 					:${<quote(!'"')> <xml-attr-value2string> cdata},
 					:${rst}) ]|
+
+		desugar-text:
+			Text(chardata) ->
+				|[ scala.xml.Text(:${str}) ]|
+				where str := <double-quote> <chardata2string> Text(chardata)
 }
