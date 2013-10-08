@@ -138,5 +138,23 @@ object SugarTest {
 				actual = (<books id="bookStore"><book title="Foo"/><book title="Baz"/></books>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "Simple HTML document"
+			val expected = """<html><head><title>Simple Document</title></head><body><h1 id="heading">Hello World!</h1><p class="greeting">This is some Text in this document. Hope you enjoy.</p></body></html>"""
+			def test() = {
+				actual = (<!-- DOCTYPE html -->
+				          <html>
+				             <head>
+				               <title>Simple Document</title>
+				             </head>
+				             <body>
+				               <h1 id="heading">Hello World!</h1>
+				               <p class="greeting">This is some Text in this
+				                  document. Hope you enjoy.</p>
+				             </body>
+				          </html>).toString.replaceAll("\\s+", " ")
+			}
+		}
 	}
 }

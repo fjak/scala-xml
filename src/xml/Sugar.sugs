@@ -5,6 +5,10 @@ import xml.XmlSyntax
 import xml.XmlTextTools
 
 sugar Sugar {
+	lexical syntax
+		"<!--"  -> ScalaPlainId {reject}
+		"-->"   -> ScalaPlainId {reject}
+
 	context-free syntax
 		Element -> ScalaExpr {prefer}
 		Element -> ScalaNoLExpr {prefer}
@@ -14,6 +18,9 @@ sugar Sugar {
 		desugar-empty-element
 		desugar-attributes
 		desugar-text
+
+	strategies
+		scala-multiline-quote = double-quote; double-quote; double-quote
 
 	rules
 		desugar-element:
@@ -103,5 +110,5 @@ sugar Sugar {
 		desugar-text:
 			Text(chardata) ->
 				|[ scala.xml.Text(:${str}) ]|
-				where str := <double-quote> <chardata2string> Text(chardata)
+				where str := <scala-multiline-quote> <chardata2string> Text(chardata)
 }
