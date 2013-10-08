@@ -25,7 +25,8 @@ object SugarTest {
 		val tests = List(
 			testEmptyElement,
 			testOneAttributeEmptyElement,
-			testMultipleAttributesEmptyElement)
+			testMultipleAttributesEmptyElement,
+			testElementWithoutContent)
 		val failed = new ListBuffer[Test]
 		for (test <- tests) {
 			if (test()) print(".")
@@ -61,6 +62,14 @@ object SugarTest {
 		val expected = "<xml id=\"foo\" lang=\"de\"/>"
 		def test() = {
 			actual = (<xml id="foo" lang="de"/>).toString
+		}
+	}
+
+	val testElementWithoutContent = new Test {
+		val name = "Element without content"
+		val expected = "<xml></xml>"
+		def test() = {
+			actual = (<xml></xml>).toString
 		}
 	}
 }

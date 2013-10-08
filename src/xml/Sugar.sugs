@@ -10,10 +10,21 @@ sugar Sugar {
 		Element -> ScalaNoLExpr {prefer}
 
 	desugarings
+		desugar-element
 		desugar-empty-element
 		desugar-attributes
 
 	rules
+		desugar-element:
+			Element(ElemName(QName(None(), name)), [], [], _) ->
+				|[ scala.xml.Elem(
+					null,
+					:${quotedName},
+					scala.xml.Null,
+					scala.xml.TopScope,
+					false) ]|
+				where quotedName := <quote(!'"')> name
+
 		desugar-empty-element:
 			EmptyElement(ElemName(QName(None(), name)), []) ->
 				|[ scala.xml.Elem(
