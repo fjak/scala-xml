@@ -21,13 +21,10 @@ trait Test {
 }
 
 object SugarTest {
+	val tests = new ListBuffer[Test]
+
 	def main(args: Array[String]) {
-		val tests = List(
-			testEmptyElement,
-			testOneAttributeEmptyElement,
-			testMultipleAttributesEmptyElement,
-			testElementWithoutContent,
-			testOneAttributeElementWithoutContent)
+		addTests
 		val failed = new ListBuffer[Test]
 		for (test <- tests) {
 			if (test()) print(".")
@@ -42,43 +39,45 @@ object SugarTest {
 		}
 	}
 
-	val testEmptyElement = new Test {
-		val name = "Empty Element Test"
-		val expected = "<xml/>"
-		def test() = {
-			actual = (<xml/>).toString
+	def addTests {
+		tests += new Test {
+			val name = "Empty Element Test"
+			val expected = "<xml/>"
+			def test() = {
+				actual = (<xml/>).toString
+			}
 		}
-	}
 
-	val testOneAttributeEmptyElement = new Test {
-		val name = "One attribute on empty element"
-		val expected = "<xml lang=\"de\"/>"
-		def test() = {
-			actual = (<xml lang="de"/>).toString
+		tests += new Test {
+			val name = "One attribute on empty element"
+			val expected = "<xml lang=\"de\"/>"
+			def test() = {
+				actual = (<xml lang="de"/>).toString
+			}
 		}
-	}
 
-	val testMultipleAttributesEmptyElement = new Test {
-		val name = "Multiple attributes on empty element"
-		val expected = "<xml id=\"foo\" lang=\"de\"/>"
-		def test() = {
-			actual = (<xml id="foo" lang="de"/>).toString
+		tests += new Test {
+			val name = "Multiple attributes on empty element"
+			val expected = "<xml id=\"foo\" lang=\"de\"/>"
+			def test() = {
+				actual = (<xml id="foo" lang="de"/>).toString
+			}
 		}
-	}
 
-	val testElementWithoutContent = new Test {
-		val name = "Element without content"
-		val expected = "<xml></xml>"
-		def test() = {
-			actual = (<xml></xml>).toString
+		tests += new Test {
+			val name = "Element without content"
+			val expected = "<xml></xml>"
+			def test() = {
+				actual = (<xml></xml>).toString
+			}
 		}
-	}
 
-	val testOneAttributeElementWithoutContent = new Test {
-		val name = "One attribute on element without content"
-		val expected = "<xml id=\"foo\"></xml>"
-		def test() = {
-			actual = (<xml id="foo"></xml>).toString
+		tests += new Test {
+			val name = "One attribute on element without content"
+			val expected = "<xml id=\"foo\"></xml>"
+			def test() = {
+				actual = (<xml id="foo"></xml>).toString
+			}
 		}
 	}
 }
