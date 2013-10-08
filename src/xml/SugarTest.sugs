@@ -130,5 +130,13 @@ object SugarTest {
 				actual = (<books><book title="Foo"/><book title="Baz"/></books>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "Many children with attributes"
+			val expected = "<books id=\"bookStore\"><book title=\"Foo\"/><book title=\"Baz\"/></books>"
+			def test() = {
+				actual = (<books id="bookStore"><book title="Foo"/><book title="Baz"/></books>).toString
+			}
+		}
 	}
 }

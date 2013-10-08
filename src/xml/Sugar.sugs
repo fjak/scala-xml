@@ -51,6 +51,21 @@ sugar Sugar {
 				        , False()
 				        , children ]))))
 
+		desugar-element:
+			Element(ElemName(QName(None(), name)), attrs, children, _) ->
+				AppExpr(
+				  Path(["scala", "xml", "Elem"])
+				, ArgumentExprs(
+				    Some(
+				      Exprs(
+				        <flatten-list>
+				        [ Null()
+				        , <double-quote> name
+				        , attrs
+				        , Path(["scala", "xml", "TopScope"])
+				        , False()
+				        , children ]))))
+
 		desugar-empty-element:
 			EmptyElement(ElemName(QName(None(), name)), []) ->
 				|[ scala.xml.Elem(
