@@ -82,5 +82,13 @@ object SugarTest {
 				actual = (<xml id="foo"></xml>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "Multiple attributes on element without content"
+			val expected = "<xml lang=\"de\" id=\"foo\"></xml>"
+			def test() = {
+				actual = (<xml lang="de" id="foo"></xml>).toString
+			}
+		}
 	}
 }
