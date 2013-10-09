@@ -1,0 +1,25 @@
+package sample
+
+import xml.Sugar
+import xml.ImplicitSugar._
+
+object Sample extends App {
+	scala.Console.err.print("Please give your name: ")
+	val name = readLine()
+	val title = s"Sample Document for '${name}'"
+	val doc =
+		<html>
+			<head>
+				<title>{title}</title>
+			</head>
+			<body>
+				<h1>{title}</h1>
+				<p>Hello <b>{name}</b>!</p>
+				<p>This is a sample HTML document, written with the help of
+				   the XML case study for SugarScala, powered by the Sugar-Lang
+				   framework.</p>
+			</body>
+		</html>
+	println("<!DOCTYPE html>")
+	println(doc)
+}
