@@ -1,6 +1,8 @@
 package xml
 
 import xml.Sugar
+import xml.ImplicitSugar._
+
 import scala.collection.immutable.List
 import scala.collection.mutable.ListBuffer
 
@@ -21,13 +23,6 @@ trait Test {
 }
 
 object SugarTest {
-	/**
-	* This is needed to use arbitrary expressions as Text nodes. Maybe there is
-	* a way to get this definition just by importing xml.Sugar, but I am not
-	* aware of how to do it at this point.
-	*/
-	implicit def anyToText(s: Any): scala.xml.Node = scala.xml.Text(s.toString)
-
 	val tests = new ListBuffer[Test]
 
 	def main(args: Array[String]) {
