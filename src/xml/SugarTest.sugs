@@ -208,5 +208,13 @@ object SugarTest {
 				actual = (<a:tag></a:tag>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "Prefix for attributes"
+			val expected = "<tag ns:attr=\"foo\"></tag>"
+			def test() = {
+				actual = (<tag ns:attr="foo"></tag>).toString
+			}
+		}
 	}
 }

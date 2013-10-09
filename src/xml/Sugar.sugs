@@ -65,7 +65,15 @@ sugar Sugar {
 		desugar-attrs:
 			[Attribute(AttrName(QName(None(), name)), attrval) | rst] ->
 				|[ new scala.xml.UnprefixedAttribute(
-					:${<quote(!'"')> name},
+					:${<double-quote> name},
+					:${<desugar-attrval> attrval},
+					:${<desugar-attrs> rst}) ]|
+
+		desugar-attrs:
+			[Attribute(AttrName(QName(Some(Prefix(prefix)), name)), attrval) | rst] ->
+				|[ new scala.xml.PrefixedAttribute(
+					:${<double-quote> prefix},
+					:${<double-quote> name},
 					:${<desugar-attrval> attrval},
 					:${<desugar-attrs> rst}) ]|
 
