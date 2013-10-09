@@ -21,6 +21,13 @@ trait Test {
 }
 
 object SugarTest {
+	/**
+	* This is needed to use arbitrary expressions as Text nodes. Maybe there is
+	* a way to get this definition just by importing xml.Sugar, but I am not
+	* aware of how to do it at this point.
+	*/
+	implicit def anyToText(s: Any): scala.xml.Node = scala.xml.Text(s.toString)
+
 	val tests = new ListBuffer[Test]
 
 	def main(args: Array[String]) {
@@ -163,6 +170,16 @@ object SugarTest {
 			def test() = {
 				val bar = <bar/>
 				actual = (<xml>{bar}</xml>).toString
+			}
+		}
+
+		tests += new Test {
+			val name = "Scala expression as text child"
+			val expected = "<b>John, age 42</b>"
+			def test() = {
+				val name = "John"
+				val age = 42
+				actual = (<b>{name}, age {age}</b>).toString
 			}
 		}
 	}

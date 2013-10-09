@@ -50,11 +50,11 @@ sugar XmlSyntax {
 
   lexical syntax
 
-    ~[\<\&]+ -> CharDataText
+    ~[\<\&\{]+ -> CharDataText
 
   lexical restrictions
 
-    CharDataText -/- ~[\<\&]
+    CharDataText -/- ~[\<\&\{]
 
   syntax
 
