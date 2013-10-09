@@ -12,6 +12,7 @@ sugar Sugar {
 	context-free syntax
 		Element -> ScalaExpr {prefer}
 		Element -> ScalaNoLExpr {prefer}
+		ScalaBlockExpr -> Element {prefer}
 
 	desugarings
 		desugar-element

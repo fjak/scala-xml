@@ -156,5 +156,14 @@ object SugarTest {
 				          </html>).toString.replaceAll("\\s+", " ")
 			}
 		}
+
+		tests += new Test {
+			val name = "Scala expression instead of element"
+			val expected = "<xml><bar/></xml>"
+			def test() = {
+				val bar = <bar/>
+				actual = (<xml>{bar}</xml>).toString
+			}
+		}
 	}
 }
