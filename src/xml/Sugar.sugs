@@ -26,9 +26,9 @@ sugar Sugar {
 
 	rules
 		desugar-element:
-			Element(ElemName(QName(None(), name)), [], [], _) ->
+			Element(ElemName(QName(prefix, name)), [], [], _) ->
 				|[ scala.xml.Elem(
-					null,
+					:${<desugar-prefix> prefix},
 					:${quotedName},
 					scala.xml.Null,
 					scala.xml.TopScope,
@@ -36,9 +36,9 @@ sugar Sugar {
 				where quotedName := <quote(!'"')> name
 
 		desugar-element:
-			Element(ElemName(QName(None(), name)), attrs, [], _) ->
+			Element(ElemName(QName(prefix, name)), attrs, [], _) ->
 				|[ scala.xml.Elem(
-					null,
+					:${<desugar-prefix> prefix},
 					:${quotedName},
 					:${attrs},
 					scala.xml.TopScope,
@@ -46,14 +46,14 @@ sugar Sugar {
 				where quotedName := <quote(!'"')> name
 
 		desugar-element:
-			Element(ElemName(QName(None(), name)), [], children, _) ->
+			Element(ElemName(QName(prefix, name)), [], children, _) ->
 				AppExpr(
 				  Path(["scala", "xml", "Elem"])
 				, ArgumentExprs(
 				    Some(
 				      Exprs(
 				        <flatten-list>
-				        [ Null()
+				        [ <desugar-prefix> prefix
 				        , <double-quote> name
 				        , Path(["scala", "xml", "Null"])
 				        , Path(["scala", "xml", "TopScope"])
@@ -61,14 +61,14 @@ sugar Sugar {
 				        , children ]))))
 
 		desugar-element:
-			Element(ElemName(QName(None(), name)), attrs, children, _) ->
+			Element(ElemName(QName(prefix, name)), attrs, children, _) ->
 				AppExpr(
 				  Path(["scala", "xml", "Elem"])
 				, ArgumentExprs(
 				    Some(
 				      Exprs(
 				        <flatten-list>
-				        [ Null()
+				        [ <desugar-prefix> prefix
 				        , <double-quote> name
 				        , attrs
 				        , Path(["scala", "xml", "TopScope"])
@@ -76,9 +76,9 @@ sugar Sugar {
 				        , children ]))))
 
 		desugar-empty-element:
-			EmptyElement(ElemName(QName(None(), name)), []) ->
+			EmptyElement(ElemName(QName(prefix, name)), []) ->
 				|[ scala.xml.Elem(
-					null,
+					:${<desugar-prefix> prefix},
 					:${quotedName},
 					scala.xml.Null,
 					scala.xml.TopScope,
@@ -86,9 +86,9 @@ sugar Sugar {
 				where quotedName := <quote(!'"')> name
 
 		desugar-empty-element:
-			EmptyElement(ElemName(QName(None(), name)), attrs) ->
+			EmptyElement(ElemName(QName(prefix, name)), attrs) ->
 				|[ scala.xml.Elem(
-					null,
+					:${<desugar-prefix> prefix},
 					:${quotedName},
 					:${attrs},
 					scala.xml.TopScope,
@@ -127,4 +127,10 @@ sugar Sugar {
 			Text(chardata) ->
 				|[ scala.xml.Text(:${str}) ]|
 				where str := <scala-multiline-quote> <chardata2string> Text(chardata)
+
+		desugar-prefix:
+			None() -> Null()
+
+		desugar-prefix:
+			Some(Prefix(p)) -> <double-quote> p
 }
