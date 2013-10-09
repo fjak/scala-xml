@@ -182,5 +182,14 @@ object SugarTest {
 				actual = (<b>{name}, age {age}</b>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "Scala expression as attribute value"
+			val expected = "<book title=\"Foo\"/>"
+			def test() = {
+				val title = "Foo"
+				actual = (<book title={title}/>).toString
+			}
+		}
 	}
 }

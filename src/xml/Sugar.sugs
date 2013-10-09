@@ -13,6 +13,7 @@ sugar Sugar {
 		Element -> ScalaExpr {prefer}
 		Element -> ScalaNoLExpr {prefer}
 		ScalaBlockExpr -> Element {prefer}
+		ScalaBlockExpr -> AttValue
 
 	desugarings
 		desugar-element
@@ -106,6 +107,20 @@ sugar Sugar {
 				|[ new scala.xml.UnprefixedAttribute(
 					:${<quote(!'"')> name},
 					:${<quote(!'"')> <xml-attr-value2string> cdata},
+					:${rst}) ]|
+
+		desugar-attributes:
+			[Attribute(AttrName(QName(None(), name)), BlockExpr(blk)) | []] ->
+				|[ new scala.xml.UnprefixedAttribute(
+					:${<quote(!'"')> name},
+					:${BlockExpr(blk)},
+					scala.xml.Null) ]|
+
+		desugar-attributes:
+			[Attribute(AttrName(QName(None(), name)), BlockExpr(blk)) | rst] ->
+				|[ new scala.xml.UnprefixedAttribute(
+					:${<quote(!'"')> name},
+					:${BlockExpr(blk)},
 					:${rst}) ]|
 
 		desugar-text:
