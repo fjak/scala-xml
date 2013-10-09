@@ -191,5 +191,19 @@ object SugarTest {
 				actual = (<book title={title}/>).toString
 			}
 		}
+
+		tests += new Test {
+			val name = "List of elems"
+			val expected = "<tags><a/><b/><c/></tags>"
+			def test() = {
+				val tags = List(<a/>, <b/>, <c/>)
+				// Build-in Scala XML would automagically unwrap the tags from
+				// the list. As the API to scala.xml.Elem expects a varargs
+				// parameter for the children and the desugaring is only term
+				// rewriting, it is required to use the `:_*` annotation here
+				// to get the same result
+				actual = (<tags>{tags:_*}</tags>).toString
+			}
+		}
 	}
 }
