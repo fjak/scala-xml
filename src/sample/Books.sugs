@@ -1,0 +1,22 @@
+package sample
+
+import xml.Sugar
+import xml.ImplicitSugar._
+
+import sample.Book
+
+object Books extends App {
+	val books =
+		List(
+		  Book(
+		    "978-0007514120",
+		    "Fat Chance: The bitter truth about sugar",
+		    "Dr. Robert Lustig"),
+		  Book(
+		    "978-0446343121",
+		    "Sugar Blues",
+		    "William Dufty"))
+	val books_xml = books.map(b => b.toXml)
+	val xml = <b:books>{books_xml:_*}</b:books>
+	println(xml)
+}
