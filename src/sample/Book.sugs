@@ -6,7 +6,7 @@ import xml.ImplicitSugar._
 case class Book(isbn: String, title: String, author: String) {
 	def toXml =
 		<b:book isbn={isbn}>
-		  <b:author>{author}</author>
-		  <b:title>{title}</title>
+		  <b:author>{author}</b:author>
+		  <b:title>{title}</b:title>
 		</b:book>
 }
