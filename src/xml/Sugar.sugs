@@ -24,6 +24,12 @@ sugar Sugar {
 		scala-multiline-quote = double-quote; double-quote; double-quote
 
 	rules
+		constraint-error:
+			Element(oname, _, _, clname) ->
+			  [(oname, "Opening and closing tag names are different"),
+			   (clname, "")]
+			where <not(structurally-equal)> (oname, clname)
+
 		desugar-element:
 			Element(ElemName(QName(prefix, name)), attrs, [], _) ->
 				|[ scala.xml.Elem(
