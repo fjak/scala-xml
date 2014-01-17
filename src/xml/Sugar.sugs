@@ -59,6 +59,17 @@ sugar Sugar {
 					true) ]|
 				where quotedName := <quote(!'"')> name
 
+		desugar-text:
+			Text(chardata) ->
+				|[ scala.xml.Text(:${str}) ]|
+				where str := <scala-multiline-quote> <chardata2string> Text(chardata)
+
+		constraint-error:
+			Element(sname, _, _, ename) ->
+			  [(sname, "Start and end tag names are different"),
+			   (ename, "Start and end tag names are different")]
+			where <not(structurally-equal)> (sname, ename)
+
 		desugar-attrs:
 			[] -> |[ scala.xml.Null ]|
 
@@ -77,11 +88,6 @@ sugar Sugar {
 					:${<desugar-attrval> attrval},
 					:${<desugar-attrs> rst}) ]|
 
-		desugar-text:
-			Text(chardata) ->
-				|[ scala.xml.Text(:${str}) ]|
-				where str := <scala-multiline-quote> <chardata2string> Text(chardata)
-
 		desugar-prefix:
 			None() -> Null()
 
@@ -93,10 +99,4 @@ sugar Sugar {
 
 		desugar-attrval:
 			DoubleQuoted(c) -> <double-quote> <xml-attr-value2string> DoubleQuoted(c)
-
-		constraint-error:
-			Element(sname, _, _, ename) ->
-			  [(sname, "Start and end tag names are different"),
-			   (ename, "Start and end tag names are different")]
-			where <not(structurally-equal)> (sname, ename)
 }
