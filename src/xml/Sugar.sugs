@@ -6,8 +6,8 @@ import xml.XmlTextTools
 
 sugar Sugar {
 	lexical syntax
-		"<!--"  -> ScalaPlainId {reject}
-		"-->"   -> ScalaPlainId {reject}
+		"<!--"  -> SCALA-KEYWORD
+		"-->"   -> SCALA-KEYWORD
 
 	context-free syntax
 		Element -> ScalaExpr {prefer}
